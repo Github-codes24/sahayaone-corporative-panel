@@ -274,14 +274,20 @@ const DashboardLayout = () => {
       >
         <div className="w-[260px] h-full flex flex-col shrink-0 min-h-0">
           {/* Logo Area */}
-        <div className="relative h-[76px] flex items-center justify-center px-4 border-b border-border-divider shrink-0 overflow-hidden">
+        <div className="relative h-[76px] flex items-center justify-start px-4 border-b border-border-divider shrink-0 overflow-hidden">
           <Link 
             to="/dashboard"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="flex items-center justify-center hover:opacity-90 transition-opacity cursor-pointer group"
+            className="flex h-full w-full items-center gap-2.5 hover:opacity-90 transition-opacity cursor-pointer group"
             title="Go to Dashboard"
           >
-            <img src="/sahayaone-logo.png" alt="Sahayaone" className="h-18 w-auto max-w-[250px] object-contain shrink-0" />
+            <div className="h-10 w-12 flex items-center justify-center rounded-md border border-gray-100 bg-white shadow-sm shrink-0 overflow-hidden p-1">
+              <img src="/sahayaone-logo.png" alt="" className="h-full w-full object-contain" />
+            </div>
+            <div className="flex flex-col justify-center whitespace-nowrap leading-none">
+              <div className="text-[18px] font-black tracking-[0.02em] text-[#225091]">SAHAYAONE</div>
+              <div className="mt-1.5 text-[9.5px] font-black tracking-[0.12em] text-[#225091]">INFO PRIVATE LIMITED</div>
+            </div>
           </Link>
           {/* Mobile-Only Close Button */}
           <button
