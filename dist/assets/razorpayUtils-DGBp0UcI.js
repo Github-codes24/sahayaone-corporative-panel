@@ -1,0 +1,1 @@
+var e=e=>{if(typeof e!=`string`)return!1;try{let t=new URL(e),n=t.hostname.toLowerCase(),r=n===`rzp.io`||n===`razorpay.com`||n.endsWith(`.razorpay.com`);return t.protocol===`https:`&&r}catch{return!1}};export{e as t};

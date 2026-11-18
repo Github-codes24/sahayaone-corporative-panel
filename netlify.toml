@@ -1,0 +1,20 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; connect-src 'self' https://devapi.advitacredit.com https://api.advitacredit.com https://checkout.razorpay.com https://s3-noi.aces3.ai https://*.aces3.ai https://fonts.googleapis.com blob: data:; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com blob:; object-src 'self' blob:; img-src 'self' data: blob: https: http:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com; frame-ancestors 'self';"
+# Proxy all /api requests to backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://devapi.advitacredit.com/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

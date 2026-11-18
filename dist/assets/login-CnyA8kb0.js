@@ -1,0 +1,1 @@
+var e=`/assets/login-2ICN_7nn.png`;export{e as t};

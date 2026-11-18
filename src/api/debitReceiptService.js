@@ -1,0 +1,133 @@
+import axiosInstance from './axiosConfig';
+
+export const debitReceiptService = {
+
+  getLocations: async () => {
+    try {
+      const response = await axiosInstance.get('/v1/society/debit-receipts/locations');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.1 Export Debit Receipts
+   * GET /v1/society/debit-receipts/export?search=...&status=...&dateFrom=...&dateTo=...
+   */
+  exportCsv: async (params = {}) => {
+    try {
+      const response = await axiosInstance.get('/v1/society/debit-receipts/export', {
+        params,
+        responseType: 'blob'
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.2 List Debit Receipts
+   * GET /v1/society/debit-receipts?page=1&limit=8&search=...&status=...
+   */
+  list: async (params = {}) => {
+    try {
+      const response = await axiosInstance.get('/v1/society/debit-receipts', { params });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.3 Create Debit Receipt
+   * POST /v1/society/debit-receipts
+   * @param {Object} data - { name, glHead, glHeadName, accountNumber, date, status }
+   */
+  create: async (data) => {
+    try {
+      const response = await axiosInstance.post('/v1/society/debit-receipts', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.4 Get Debit Receipt Details
+   * GET /v1/society/debit-receipts/:id
+   */
+  getById: async (id) => {
+    try {
+      const response = await axiosInstance.get(`/v1/society/debit-receipts/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.5 Update Debit Receipt
+   * PUT /v1/society/debit-receipts/:id
+   */
+  update: async (id, data) => {
+    try {
+      const response = await axiosInstance.put(`/v1/society/debit-receipts/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 2.6 Delete Debit Receipt
+   * DELETE /v1/society/debit-receipts/:id
+   */
+  
+  /**
+   * Approve Receipt
+   * PUT /v1/society/debit-receipts/:id/approve
+   * @param {string|number} id - Receipt ID
+   */
+  approve: async (id) => {
+    try {
+      const response = await axiosInstance.put(`/v1/society/debit-receipts/${id}/approve`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Reject Receipt
+   * PUT /v1/society/debit-receipts/:id/reject
+   * @param {string|number} id - Receipt ID
+   * @param {string} rejectionReason - Reason for rejection
+   */
+  reject: async (id, rejectionReason) => {
+    try {
+      const response = await axiosInstance.put(`/v1/society/debit-receipts/${id}/reject`, { rejectionReason });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  delete: async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/v1/society/debit-receipts/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+};
