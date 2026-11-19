@@ -74,15 +74,9 @@ const BankDashboardLayout = () => {
         }`}
       >
         <div className="w-64 h-full flex flex-col shrink-0">
-          <div className="relative h-[76px] px-4 border-b border-gray-100 flex items-center justify-start">
-            <Link to="/bank/dashboard" onClick={() => setIsMobileOpen(false)} className="flex h-full w-full items-center gap-2.5 hover:opacity-85 transition-opacity">
-              <div className="h-10 w-12 flex items-center justify-center rounded-md border border-gray-100 bg-white shadow-sm shrink-0 overflow-hidden p-1">
-                <img src="/sahayaone-logo.png" alt="" className="h-full w-full object-contain" />
-              </div>
-              <div className="flex flex-col justify-center whitespace-nowrap leading-none">
-                <div className="text-[18px] font-black tracking-[0.02em] text-[#225091]">SAHAYAONE</div>
-                <div className="mt-1.5 text-[9.5px] font-black tracking-[0.12em] text-[#225091]">INFO PRIVATE LIMITED</div>
-              </div>
+          <div className="relative h-[92px] px-4 border-b border-gray-100 flex items-center justify-center">
+            <Link to="/bank/dashboard" onClick={() => setIsMobileOpen(false)} className="flex h-full w-full items-center justify-center hover:opacity-85 transition-opacity">
+              <img src="/sahayaone-logo.png" alt="Sahayaone" className="h-[64px] w-[190px] object-contain" />
             </Link>
             <button
               type="button"

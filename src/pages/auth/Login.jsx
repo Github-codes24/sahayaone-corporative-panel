@@ -107,11 +107,9 @@ const Login = () => {
       welcomeHeading={"WELCOME TO\nSAHAYAONE CO-OPERATIVE & BRANCH"}
       illustration={<img src={loginIllustration} alt="Login Illustration" className="w-full h-auto object-contain drop-shadow-xl" />}
     >
-      {/* Top Logo Badge inside Card */}
+      {/* Brand logo above the login form */}
       <div className="flex flex-col items-center text-center mb-6">
-        <div className="bg-white rounded-[16px] shadow-sm border border-gray-100 p-2 flex items-center justify-center shrink-0 w-[54px] h-[54px] mb-3.5">
-          <img src="/sahayaone-logo.png" alt="Sahayaone" className="w-full h-full object-contain" />
-        </div>
+        <img src="/sahayaone-logo.png" alt="Sahayaone" className="h-[72px] w-[210px] object-contain mb-3.5" />
 
         <h2 className="text-[22px] sm:text-[24px] font-black tracking-wide uppercase leading-tight">
           <span className="text-[#1B4E8C]">CO-OPERATIVE </span>
