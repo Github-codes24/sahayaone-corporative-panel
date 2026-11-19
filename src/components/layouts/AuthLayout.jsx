@@ -5,18 +5,22 @@ const AuthLayout = ({ children, illustration, welcomeHeading = "WELCOME TO\nSAHA
       <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
         
         {/* Left Side: Branding & Illustration */}
-        <div className="hidden lg:flex flex-1 flex-col items-start justify-center pl-4 max-w-xl">
+        <div className="hidden lg:flex flex-1 flex-col items-start justify-center pl-4">
           {/* Header Banner with Logo and Welcome Title */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="bg-white rounded-[16px] shadow-lg p-2.5 flex items-center justify-center shrink-0 w-[60px] h-[60px] border border-white/20">
+            <div className="bg-white rounded-[12px] shadow-lg p-0 flex items-center justify-center shrink-0 w-16 h-16 border border-white/20 overflow-hidden">
               <img src="/sahayaone-logo.png" alt="Sahayaone" className="w-full h-full object-contain" />
             </div>
             
             <div className="flex flex-col">
-              <h1 className="text-white text-2xl xl:text-[28px] font-black tracking-wider uppercase leading-tight whitespace-pre-line drop-shadow-md">
-                {welcomeHeading}
+              <h1 className="text-white text-lg xl:text-[22px] tracking-wide xl:tracking-normal uppercase leading-tight drop-shadow-md">
+                {welcomeHeading.split('\n').map((line, index) => (
+                  <span key={index} className={`block ${index === 0 ? 'font-semibold' : 'font-black'}`}>
+                    {line}
+                  </span>
+                ))}
               </h1>
-              <div className="w-32 h-[3.5px] bg-[#ef3b3a] rounded-full mt-2.5 shadow-sm"></div>
+              <div className="w-40 h-[3.5px] bg-[#ef3b3a] rounded-full mt-2.5 shadow-sm"></div>
             </div>
           </div>
 
@@ -40,11 +44,15 @@ const AuthLayout = ({ children, illustration, welcomeHeading = "WELCOME TO\nSAHA
         {/* Mobile Header Banner (Visible only on mobile/tablet) */}
         <div className="lg:hidden flex flex-col items-center text-center mb-4">
           <div className="flex items-center gap-3.5">
-            <div className="bg-white rounded-[14px] shadow-md p-2 flex items-center justify-center shrink-0 w-12 h-12">
+            <div className="bg-white rounded-[10px] shadow-md p-0 flex items-center justify-center shrink-0 w-11 h-11 overflow-hidden">
               <img src="/sahayaone-logo.png" alt="Sahayaone" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-white text-lg sm:text-xl font-black tracking-wider uppercase text-left leading-tight">
-              SAHAYAONE CO-OPERATIVE<br />& BRANCH
+            <h1 className="text-white text-lg sm:text-xl tracking-wide uppercase text-left leading-tight">
+              {welcomeHeading.split('\n').map((line, index) => (
+                <span key={index} className={`block ${index === 0 ? 'font-semibold' : 'font-black'}`}>
+                  {line}
+                </span>
+              ))}
             </h1>
           </div>
           <div className="w-24 h-[3px] bg-[#ef3b3a] rounded-full mt-2.5"></div>
