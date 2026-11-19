@@ -16,6 +16,11 @@ import PdfPreviewModal from "../modals/PdfPreviewModal";
 import FormEditModal from "../modals/FormEditModal";
 import InitializeEsignModal from "../modals/InitializeEsignModal";
 
+const ESIGN_DEFAULT_COORDINATES = {
+  MEMBER_FORM: { x: 58, y: 265 },
+  LOAN_FILE: { page: 3, x: 80, y: 555 },
+};
+
 const OnboardingFormsDrawer = ({
   isOpen,
   onClose,
@@ -269,8 +274,10 @@ const OnboardingFormsDrawer = ({
     let elements = null;
 
     // Check if operator supplied custom coordinates in the modal
-    const customX = payload.coordX ? parseInt(payload.coordX, 10) : null;
-    const customY = payload.coordY ? parseInt(payload.coordY, 10) : null;
+    const customX = payload.coordX !== undefined ? Number(payload.coordX) : null;
+    const customY = payload.coordY !== undefined ? Number(payload.coordY) : null;
+    const memberFormCoordinates = ESIGN_DEFAULT_COORDINATES.MEMBER_FORM;
+    const loanFileCoordinates = ESIGN_DEFAULT_COORDINATES.LOAN_FILE;
 
     // Remove from payload so backend doesn't receive unexpected root keys
     delete payload.coordX;
@@ -295,8 +302,8 @@ const OnboardingFormsDrawer = ({
           {
             page: 0,
             type: "signature",
-            x: customX || 396,
-            y: customY || 275,
+            x: Number.isFinite(customX) ? customX : memberFormCoordinates.x,
+            y: Number.isFinite(customY) ? customY : memberFormCoordinates.y,
             height: 60,
             width: 140,
             font_size: 24,
@@ -319,10 +326,10 @@ const OnboardingFormsDrawer = ({
       case "LOAN_FILE":
         elements = [
           {
-            page: 2,
+            page: loanFileCoordinates.page,
             type: "signature",
-            x: customX || 396,
-            y: customY || 275,
+            x: Number.isFinite(customX) ? customX : loanFileCoordinates.x,
+            y: Number.isFinite(customY) ? customY : loanFileCoordinates.y,
             height: 60,
             width: 140,
             font_size: 24,
@@ -759,6 +766,7 @@ const OnboardingFormsDrawer = ({
         <InitializeEsignModal
           isOpen={true}
           formTitle={activeInitializeForm.title}
+          defaultCoordinates={ESIGN_DEFAULT_COORDINATES[activeInitializeForm.formType]}
           isReinitializing={activeInitializeForm.eSignStatus === "ESIGN_PENDING" || activeInitializeForm.status === "ESIGN_PENDING"}
           onClose={() => setActiveInitializeForm(null)}
           onInitialize={handleInitializeEsign}
