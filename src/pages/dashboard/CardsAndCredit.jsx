@@ -72,6 +72,21 @@ const MONTHS_LIST = [
 
 const YEARS_LIST = [2024, 2025, 2026, 2027];
 
+const extractBranchList = (response) => {
+  const data = response?.data ?? response;
+  if (Array.isArray(data)) return data;
+
+  const candidates = [
+    data?.branches,
+    data?.items,
+    data?.data,
+    data?.results,
+    data?.data?.branches,
+    data?.data?.items
+  ];
+  return candidates.find(Array.isArray) || [];
+};
+
 /**
  * Universal date / month matcher for card & credit records
  */
@@ -185,6 +200,8 @@ const CardsAndCredit = () => {
 
   // Branches list for distribution
   const [branches, setBranches] = useState([]);
+  const [branchesLoading, setBranchesLoading] = useState(false);
+  const [branchesError, setBranchesError] = useState('');
   const [selectedBranchForInspection, setSelectedBranchForInspection] = useState('');
   const [branchWalletData, setBranchWalletData] = useState(null);
   const [branchWalletLoading, setBranchWalletLoading] = useState(false);
@@ -281,26 +298,42 @@ const CardsAndCredit = () => {
 
   // 2. Fetch Branches for Allocation Dropdowns
   const fetchBranches = useCallback(async () => {
+    setBranchesLoading(true);
+    setBranchesError('');
     try {
-      const res = await branchService.list({ limit: 100 });
       let branchList = [];
-      if (res && res.data) {
-        if (Array.isArray(res.data)) {
-          branchList = res.data;
-        } else if (Array.isArray(res.data.branches)) {
-          branchList = res.data.branches;
-        } else if (Array.isArray(res.data.data)) {
-          branchList = res.data.data;
+      let dropdownError;
+
+      try {
+        branchList = extractBranchList(await branchService.getDropdownList());
+      } catch (error) {
+        dropdownError = error;
+        console.warn('Branch dropdown endpoint failed; trying the branch list endpoint:', error);
+      }
+
+      if (branchList.length === 0) {
+        try {
+          branchList = extractBranchList(await branchService.list({ limit: 100 }));
+        } catch (error) {
+          if (dropdownError) {
+            console.error('Both branch endpoints failed:', dropdownError, error);
+          }
+          throw error;
         }
       }
+
       setBranches(branchList);
-      if (branchList.length > 0 && !targetBranchId) {
-        setTargetBranchId(branchList[0]._id || branchList[0].id);
+      if (branchList.length > 0) {
+        const firstBranchId = branchList[0]._id || branchList[0].id || branchList[0].branchId;
+        setTargetBranchId(currentBranchId => currentBranchId || firstBranchId || '');
       }
     } catch (error) {
       console.error('Error fetching branches for card distribution:', error);
+      setBranchesError(error.response?.data?.message || 'Unable to load branches. Please try again.');
+    } finally {
+      setBranchesLoading(false);
     }
-  }, [targetBranchId]);
+  }, []);
 
   // 3. Fetch EMI Card Movement History
   const fetchEmiHistory = useCallback(async (page = 1) => {
@@ -863,7 +896,10 @@ const CardsAndCredit = () => {
             <RefreshCcw size={16} className={dashboardLoading ? 'animate-spin text-[#225091]' : ''} />
           </button>
           <button 
-            onClick={() => setIsDistributeModalOpen(true)}
+            onClick={() => {
+              setIsDistributeModalOpen(true);
+              fetchBranches();
+            }}
             className="px-4 py-2.5 rounded-full border border-[#225091] text-[#225091] hover:bg-blue-50 font-semibold transition-all text-xs flex items-center gap-2 shadow-2xs cursor-pointer"
           >
             <Send size={14} />
@@ -1921,17 +1957,32 @@ const CardsAndCredit = () => {
                   <select 
                     value={targetBranchId}
                     onChange={(e) => setTargetBranchId(e.target.value)}
+                    disabled={branchesLoading || branches.length === 0}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#225091]/20 focus:border-[#225091] transition-all bg-white text-sm text-gray-700 appearance-none font-medium"
                   >
-                    <option value="">-- Select Target Branch --</option>
+                    <option value="">
+                      {branchesLoading
+                        ? 'Loading branches...'
+                        : branches.length
+                          ? '-- Select Target Branch --'
+                          : 'No branches available'}
+                    </option>
                     {branches.map((b) => (
-                      <option key={b._id || b.id} value={b._id || b.id}>
-                        {b.name} ({b.branchCode || b.code || 'BR'})
+                      <option key={b._id || b.id || b.branchId} value={b._id || b.id || b.branchId}>
+                        {b.name || b.branchName || 'Unnamed Branch'} ({b.branchCode || b.code || 'BR'})
                       </option>
                     ))}
                   </select>
                   <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                 </div>
+                {branchesError && (
+                  <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-red-600">
+                    <span>{branchesError}</span>
+                    <button type="button" onClick={fetchBranches} className="font-semibold underline">
+                      Retry
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Quantities */}

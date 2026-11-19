@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { X, Mail, Phone, User, ShieldCheck } from 'lucide-react';
 
-const InitializeEsignModal = ({ isOpen, onClose, formTitle, onInitialize, isInitializing, isReinitializing = false }) => {
+const InitializeEsignModal = ({ isOpen, onClose, formTitle, onInitialize, isInitializing, isReinitializing = false, defaultCoordinates }) => {
   const [formData, setFormData] = useState({
     email: '',
     mobile: '',
     fullName: '',
-    coordX: '',
-    coordY: ''
+    coordX: defaultCoordinates?.x?.toString() || '',
+    coordY: defaultCoordinates?.y?.toString() || ''
   });
 
   if (!isOpen) return null;
