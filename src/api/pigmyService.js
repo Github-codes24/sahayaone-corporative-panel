@@ -3,7 +3,7 @@ import axiosInstance from './axiosConfig';
 /**
  * Society Panel Pigmy Deposit Management V2 API Service
  * Connects to Advita-Backend REST endpoints under /v1/society/pigmy-customers (and alias /v1/society/pigmy)
- * (proxied via /api to devapi.advitacredit.com)
+ * (proxied via /api to devapi.sahayaone.com)
  */
 export const pigmyService = {
   /**

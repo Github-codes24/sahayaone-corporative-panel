@@ -28,7 +28,7 @@ export const resolveSelfieUrl = (val) => {
   if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
     return url;
   }
-  const rawApiUrl = (import.meta.env.VITE_API_URL || 'https://devapi.advitacredit.com').trim();
+  const rawApiUrl = (import.meta.env.VITE_API_URL || 'https://devapi.sahayaone.com/').trim();
   const baseOrigin = rawApiUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '');
   return `${baseOrigin}${url.startsWith('/') ? '' : '/'}${url}`;
 };
