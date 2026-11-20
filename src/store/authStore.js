@@ -1,6 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+const API_ORIGIN_STORAGE_KEY = 'auth-api-origin';
+
+try {
+  const currentApiOrigin = (import.meta.env.VITE_API_URL || 'https://devapi.sahayaone.com/')
+    .trim()
+    .replace(/\/+$/, '');
+  const storedApiOrigin = localStorage.getItem(API_ORIGIN_STORAGE_KEY);
+
+  if (storedApiOrigin && storedApiOrigin !== currentApiOrigin) {
+    localStorage.removeItem('auth-storage');
+    localStorage.removeItem('branch-storage');
+  }
+
+  localStorage.setItem(API_ORIGIN_STORAGE_KEY, currentApiOrigin);
+} catch {}
+
 const useAuthStore = create(
   persist(
     (set) => ({

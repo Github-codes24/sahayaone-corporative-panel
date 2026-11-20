@@ -6,7 +6,7 @@ import https from 'node:https'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const proxyTarget = (env.VITE_API_URL || 'https://devapi.advitacredit.com').replace(/\/api\/?$/, '');
+  const proxyTarget = (env.VITE_API_URL || 'https://devapi.sahayaone.com/').replace(/\/api\/?$/, '');
   const agent = new https.Agent({ keepAlive: false });
 
   return {

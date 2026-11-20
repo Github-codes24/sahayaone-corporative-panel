@@ -6,11 +6,11 @@ import useLoadingStore from '../store/loadingStore';
 // - In local development (Vite dev server), default to '/api' to leverage Vite's local proxy
 //   (unless explicitly overridden by VITE_FORCE_DIRECT_API).
 // - In production builds (Netlify, VPS, .com), connect directly to the backend API
-//   (e.g., https://devapi.advitacredit.com/api) so that standalone hosts without custom
+//   (e.g., https://devapi.sahayaone.com/api) so that standalone hosts without custom
 //   reverse proxy configurations do not return HTML fallbacks.
 let apiBaseUrl = '/api';
 
-const rawApiUrl = (import.meta.env.VITE_API_URL || 'https://devapi.advitacredit.com').trim();
+const rawApiUrl = (import.meta.env.VITE_API_URL || 'https://devapi.sahayaone.com/').trim();
 const normalizedBackendUrl = rawApiUrl.endsWith('/api')
   ? rawApiUrl
   : `${rawApiUrl.replace(/\/+$/, '')}/api`;
